@@ -20,8 +20,8 @@ public class UserDaoJDBCImpl implements UserDao {
         String sql = "CREATE TABLE IF NOT EXISTS users " +
                 "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age INT)";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -30,8 +30,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,7 +69,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
         String sql = "SELECT * FROM users";
 
-        try (ResultSet resultSet = connection.createStatement().executeQuery(sql)) {
+        try (ResultSet resultSet = connection.prepareStatement(sql).executeQuery()) {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
@@ -88,8 +88,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
 
         String sql = "TRUNCATE TABLE users";
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
