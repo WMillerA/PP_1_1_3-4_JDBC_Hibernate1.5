@@ -10,166 +10,86 @@ import static jm.task.core.jdbc.util.Util.getConnection;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    Connection connection = getConnection();
+    private static final Connection connection = getConnection();
 
     public UserDaoJDBCImpl() {
     }
 
-    @Override
-    public void createUsersTable(User user) throws SQLException {
-        PreparedStatement preparedStatement = null;
-
-        String sql = "CREATE TABLE IF NOT EXISTS users\" +\n" +
-                "\"(id BIGINT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(32)," +
-                "lastName VARCHAR(32),age TINYINT DEFAULT 0";
-
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getLastName());
-            preparedStatement.setByte(4, user.getAge());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
-
-    @Override
     public void createUsersTable() {
 
+        String sql = "CREATE TABLE IF NOT EXISTS users " +
+                "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age INT)";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void dropUsersTable() throws SQLException {
-        Statement statement = null;
-
+    public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users";
 
-        try {
-            statement = connection.createStatement();
-            statement.execute(sql);
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
         }
-
-
     }
 
-    @Override
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
-        PreparedStatement preparedStatement = null;
+    public void saveUser(String name, String lastName, byte age) {
 
-        String sql = "INSERT INTO users (id, name, lastName, age)" +
-                "VALUES (id, '\" + name + \"', '\" + lastName + \"', '\" + age + \"')";
+        String sql = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
 
-        try {
-            preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
-            System.out.println("User c имненем '" + name + "' добавлен в базу данных");
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
         }
     }
 
-    @Override
-    public void removeUserById(long id) throws SQLException {
-        PreparedStatement preparedStatement = null;
+    public void removeUserById(long id) {
 
         String sql = "DELETE FROM users WHERE id = ?";
-        User user = new User();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, user.getId());
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
         }
-
     }
 
-    @Override
-    public List<User> getAllUsers() throws SQLException {
-        List<User> userList = new ArrayList<>();
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
 
         String sql = "SELECT * FROM users";
 
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
+        try (ResultSet resultSet = connection.createStatement().executeQuery(sql)) {
             while (resultSet.next()) {
-                User user = new User();
+                User user = new User(resultSet.getString("name"),
+                        resultSet.getString("lastName"),
+                        resultSet.getByte("age"));
                 user.setId(resultSet.getLong("id"));
-                user.setName(resultSet.getString("name"));
-                user.setLastName(resultSet.getString("lastName"));
-                user.setAge(resultSet.getByte("age"));
-
-                userList.add(user);
+                users.add(user);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
         }
-        return userList;
+        return users;
     }
 
-    @Override
-    public void cleanUsersTable() throws SQLException {
-        PreparedStatement preparedStatement = null;
+    public void cleanUsersTable() {
 
         String sql = "TRUNCATE TABLE users";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
         }
     }
 }
