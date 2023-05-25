@@ -1,0 +1,636 @@
+Index: src/main/java/jm/task/core/jdbc/dao/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.dao;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserDao {\r\n    void createUsersTable();\r\n\r\n    void dropUsersTable();\r\n\r\n    void saveUser(String name, String lastName, byte age);\r\n\r\n    void removeUserById(long id);\r\n\r\n    List<User> getAllUsers();\r\n\r\n    void cleanUsersTable();\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/dao/UserDao.java b/src/main/java/jm/task/core/jdbc/dao/UserDao.java
+--- a/src/main/java/jm/task/core/jdbc/dao/UserDao.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/dao/UserDao.java	(date 1684953051412)
+@@ -2,18 +2,21 @@
+ 
+ import jm.task.core.jdbc.model.User;
+ 
++import java.sql.SQLException;
+ import java.util.List;
+ 
+ public interface UserDao {
++    void createUsersTable(User user) throws SQLException, SQLException;
++
+     void createUsersTable();
+ 
+-    void dropUsersTable();
++    void dropUsersTable() throws SQLException;
+ 
+-    void saveUser(String name, String lastName, byte age);
++    void saveUser(String name, String lastName, byte age) throws SQLException;
+ 
+-    void removeUserById(long id);
++    void removeUserById(long id) throws SQLException;
+ 
+-    List<User> getAllUsers();
++    List<User> getAllUsers() throws SQLException;
+ 
+-    void cleanUsersTable();
++    void cleanUsersTable() throws SQLException;
+ }
+Index: src/main/java/jm/task/core/jdbc/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.service;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserService {\r\n    void createUsersTable();\r\n\r\n    void dropUsersTable();\r\n\r\n    void saveUser(String name, String lastName, byte age);\r\n\r\n    void removeUserById(long id);\r\n\r\n    List<User> getAllUsers();\r\n\r\n    void cleanUsersTable();\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/service/UserService.java b/src/main/java/jm/task/core/jdbc/service/UserService.java
+--- a/src/main/java/jm/task/core/jdbc/service/UserService.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/service/UserService.java	(date 1685006584487)
+@@ -2,18 +2,19 @@
+ 
+ import jm.task.core.jdbc.model.User;
+ 
++import java.sql.SQLException;
+ import java.util.List;
+ 
+ public interface UserService {
+     void createUsersTable();
+ 
+-    void dropUsersTable();
++    void dropUsersTable() throws SQLException;
+ 
+-    void saveUser(String name, String lastName, byte age);
++    void saveUser(String name, String lastName, byte age) throws SQLException;
+ 
+-    void removeUserById(long id);
++    void removeUserById(long id) throws SQLException;
+ 
+-    List<User> getAllUsers();
++    List<User> getAllUsers() throws SQLException;
+ 
+-    void cleanUsersTable();
++    void cleanUsersTable() throws SQLException;
+ }
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>org.example</groupId>\r\n    <artifactId>TaskJDBC</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.apache.maven.plugins</groupId>\r\n                <artifactId>maven-compiler-plugin</artifactId>\r\n                <configuration>\r\n                    <source>17</source>\r\n                    <target>17</target>\r\n                </configuration>\r\n            </plugin>\r\n        </plugins>\r\n    </build>\r\n\r\n    <dependencies>\r\n<!--         Ваши зависимости-->\r\n         <!-- https://mvnrepository.com/artifact/junit/junit -->\r\n         <dependency>\r\n             <groupId>junit</groupId>\r\n             <artifactId>junit</artifactId>\r\n             <version>4.13.2</version>\r\n             <scope>test</scope>\r\n         </dependency>\r\n\r\n        <dependency>\r\n            <groupId>mysql</groupId>\r\n            <artifactId>mysql-connector-java</artifactId>\r\n            <version>8.0.25</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.hibernate.javax.persistence</groupId>\r\n            <artifactId>hibernate-jpa-2.1-api</artifactId>\r\n            <version>1.0.2.Final</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.hibernate</groupId>\r\n            <artifactId>hibernate-core</artifactId>\r\n            <version>5.6.3.Final</version>\r\n        </dependency>\r\n     </dependencies>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/pom.xml	(date 1684950709475)
+@@ -33,7 +33,7 @@
+         <dependency>
+             <groupId>mysql</groupId>
+             <artifactId>mysql-connector-java</artifactId>
+-            <version>8.0.25</version>
++            <version>8.0.33</version>
+         </dependency>
+ 
+         <dependency>
+@@ -45,7 +45,7 @@
+         <dependency>
+             <groupId>org.hibernate</groupId>
+             <artifactId>hibernate-core</artifactId>
+-            <version>5.6.3.Final</version>
++            <version>6.1.7.Final</version>
+         </dependency>
+      </dependencies>
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1684852544779)
++++ b/.idea/misc.xml	(date 1684852544779)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/pom.xml" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK" />
++</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1684852544954)
++++ b/.idea/.gitignore	(date 1684852544954)
+@@ -0,0 +1,8 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Editor-based HTTP Client requests
++/httpRequests/
++# Datasource local storage ignored files
++/dataSources/
++/dataSources.local.xml
+Index: src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.dao;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\n\r\nimport java.util.List;\r\n\r\npublic class UserDaoHibernateImpl implements UserDao {\r\n    public UserDaoHibernateImpl() {\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    public void createUsersTable() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void dropUsersTable() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void saveUser(String name, String lastName, byte age) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void removeUserById(long id) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public List<User> getAllUsers() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void cleanUsersTable() {\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java b/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java
+--- a/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java	(date 1684953051406)
+@@ -2,13 +2,16 @@
+ 
+ import jm.task.core.jdbc.model.User;
+ 
++import java.sql.SQLException;
+ import java.util.List;
+ 
+ public class UserDaoHibernateImpl implements UserDao {
+     public UserDaoHibernateImpl() {
+-
+     }
++    @Override
++    public void createUsersTable(User user) throws SQLException {
+ 
++    }
+ 
+     @Override
+     public void createUsersTable() {
+Index: src/main/java/jm/task/core/jdbc/util/Util.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.util;\r\n\r\npublic class Util {\r\n    // реализуйте настройку соеденения с БД\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/util/Util.java b/src/main/java/jm/task/core/jdbc/util/Util.java
+--- a/src/main/java/jm/task/core/jdbc/util/Util.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/util/Util.java	(date 1685006859204)
+@@ -1,5 +1,45 @@
+ package jm.task.core.jdbc.util;
+ 
++import org.hibernate.SessionBuilder;
++
++import java.sql.*;
++
+ public class Util {
+-    // реализуйте настройку соеденения с БД
++    private static final String BD_DRIVER = "com.mysql.cj.jdbc.Driver";
++    private static final String URL = "jdbc:mysql://localhost:3306/mydbtest";
++    private static final String USERNAME = "root";
++    private static final String PASSWORD = "root";
++
++    public static Connection getConnection() {
++        Connection connection = null;
++        try {
++            Class.forName(BD_DRIVER);
++            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
++            System.out.println("Соединение с БД установлено!");
++        } catch (ClassNotFoundException | SQLException e) {
++            e.printStackTrace();
++            System.out.println("Ошибка соединения с БД!");
++        }
++        return connection;
++    }
+ }
++
++
++
++    /* public static void main(String[] args) {
++
++        try {
++            Driver driver = new FabricMySQLDriver();
++            DriverManager.registerDriver(driver);
++        } catch (SQLException e) {
++            System.err.println("Не удалось загрузить класс драйвера!");
++        }
++
++        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
++             Statement statement = connection.createStatement()) {
++        } catch (SQLException e) {
++            e.printStackTrace();
++        }
++    }
++}*/
++
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1684852555357)
++++ b/.idea/compiler.xml	(date 1684852555357)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="TaskJDBC" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+new file mode 100644
+--- /dev/null	(date 1684916866485)
++++ b/.idea/dataSources.xml	(date 1684916866485)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
++    <data-source source="LOCAL" name="mydbtest@localhost" uuid="8bdde810-456a-42f5-bb28-d3380a86be04">
++      <driver-ref>mysql.8</driver-ref>
++      <synchronize>true</synchronize>
++      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
++      <jdbc-url>jdbc:mysql://localhost:3306/mydbtest</jdbc-url>
++      <working-dir>$ProjectFileDir$</working-dir>
++    </data-source>
++  </component>
++</project>
+\ No newline at end of file
+Index: src/main/java/jm/task/core/jdbc/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.model;\r\n\r\nimport javax.persistence.Column;\r\nimport javax.persistence.Id;\r\nimport javax.persistence.Table;\r\n\r\n@Table\r\npublic class User {\r\n    @Id\r\n    private Long id;\r\n\r\n    @Column\r\n    private String name;\r\n\r\n    @Column\r\n    private String lastName;\r\n\r\n    @Column\r\n    private Byte age;\r\n\r\n    public User() {\r\n\r\n    }\r\n\r\n    public User(String name, String lastName, Byte age) {\r\n        this.name = name;\r\n        this.lastName = lastName;\r\n        this.age = age;\r\n    }\r\n\r\n    public Long getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Long id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getLastName() {\r\n        return lastName;\r\n    }\r\n\r\n    public void setLastName(String lastName) {\r\n        this.lastName = lastName;\r\n    }\r\n\r\n    public Byte getAge() {\r\n        return age;\r\n    }\r\n\r\n    public void setAge(Byte age) {\r\n        this.age = age;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/model/User.java b/src/main/java/jm/task/core/jdbc/model/User.java
+--- a/src/main/java/jm/task/core/jdbc/model/User.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/model/User.java	(date 1684883171164)
+@@ -18,8 +18,19 @@
+     @Column
+     private Byte age;
+ 
++    @Override
++    public String toString() {
++        return "User{" +
++                "id=" + id +
++                ", name='" + name + '\'' +
++                ", lastName='" + lastName + '\'' +
++                ", age=" + age +
++                '}';
++    }
++
+     public User() {
+ 
++
+     }
+ 
+     public User(String name, String lastName, Byte age) {
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1684852544790)
++++ b/.idea/vcs.xml	(date 1684852544790)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.dao;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\n\r\nimport java.util.List;\r\n\r\npublic class UserDaoJDBCImpl implements UserDao {\r\n    public UserDaoJDBCImpl() {\r\n\r\n    }\r\n\r\n    public void createUsersTable() {\r\n\r\n    }\r\n\r\n    public void dropUsersTable() {\r\n\r\n    }\r\n\r\n    public void saveUser(String name, String lastName, byte age) {\r\n\r\n    }\r\n\r\n    public void removeUserById(long id) {\r\n\r\n    }\r\n\r\n    public List<User> getAllUsers() {\r\n        return null;\r\n    }\r\n\r\n    public void cleanUsersTable() {\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java b/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java
+--- a/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java	(date 1685009749148)
+@@ -2,34 +2,174 @@
+ 
+ import jm.task.core.jdbc.model.User;
+ 
++import java.sql.*;
++import java.util.ArrayList;
+ import java.util.List;
+ 
++import static jm.task.core.jdbc.util.Util.getConnection;
++
+ public class UserDaoJDBCImpl implements UserDao {
++
++    Connection connection = getConnection();
++
+     public UserDaoJDBCImpl() {
++    }
++
++    @Override
++    public void createUsersTable(User user) throws SQLException {
++        PreparedStatement preparedStatement = null;
++
++        String sql = "CREATE TABLE IF NOT EXISTS users\" +\n" +
++                "\"(id BIGINT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(32)," +
++                "lastName VARCHAR(32),age TINYINT DEFAULT 0";
+ 
++        try {
++            preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.setLong(1, user.getId());
++            preparedStatement.setString(2, user.getName());
++            preparedStatement.setString(3, user.getLastName());
++            preparedStatement.setByte(4, user.getAge());
++
++            preparedStatement.executeUpdate();
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (preparedStatement != null) {
++                preparedStatement.close();
++            }
++            if (connection != null) {
++                connection.close();
++            }
++        }
+     }
+ 
++    @Override
+     public void createUsersTable() {
+ 
+     }
+ 
+-    public void dropUsersTable() {
++    @Override
++    public void dropUsersTable() throws SQLException {
++        Statement statement = null;
++
++        String sql = "DROP TABLE IF EXISTS users";
++
++        try {
++            statement = connection.createStatement();
++            statement.execute(sql);
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (statement != null) {
++                statement.close();
++            }
++            if (connection != null) {
++                connection.close();
++            }
++        }
++
++
++    }
++
++    @Override
++    public void saveUser(String name, String lastName, byte age) throws SQLException {
++        PreparedStatement preparedStatement = null;
++
++        String sql = "INSERT INTO users (id, name, lastName, age)" +
++                "VALUES (id, '\" + name + \"', '\" + lastName + \"', '\" + age + \"')";
+ 
++        try {
++            preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.executeUpdate();
++            System.out.println("User c имненем '" + name + "' добавлен в базу данных");
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (preparedStatement != null) {
++                preparedStatement.close();
++            }
++
++            if (connection != null) {
++                connection.close();
++            }
++        }
+     }
+ 
+-    public void saveUser(String name, String lastName, byte age) {
++    @Override
++    public void removeUserById(long id) throws SQLException {
++        PreparedStatement preparedStatement = null;
++
++        String sql = "DELETE FROM users WHERE id = ?";
++        User user = new User();
++        try {
++            preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.setLong(1, user.getId());
++            preparedStatement.executeUpdate();
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (preparedStatement != null) {
++                preparedStatement.close();
++            }
++            if (connection != null) {
++                connection.close();
++            }
++        }
+ 
+     }
+ 
+-    public void removeUserById(long id) {
++    @Override
++    public List<User> getAllUsers() throws SQLException {
++        List<User> userList = new ArrayList<>();
++
++        String sql = "SELECT * FROM users";
++
++        PreparedStatement preparedStatement = null;
++
++        try {
++            preparedStatement = connection.prepareStatement(sql);
++            ResultSet resultSet = preparedStatement.executeQuery();
++
++            while (resultSet.next()) {
++                User user = new User();
++                user.setId(resultSet.getLong("id"));
++                user.setName(resultSet.getString("name"));
++                user.setLastName(resultSet.getString("lastName"));
++                user.setAge(resultSet.getByte("age"));
+ 
+-    }
++                userList.add(user);
++            }
+ 
+-    public List<User> getAllUsers() {
+-        return null;
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (preparedStatement != null) {
++                preparedStatement.close();
++            }
++            if (connection != null) {
++                connection.close();
++            }
++        }
++        return userList;
+     }
+ 
+-    public void cleanUsersTable() {
++    @Override
++    public void cleanUsersTable() throws SQLException {
++        PreparedStatement preparedStatement = null;
+ 
++        String sql = "TRUNCATE TABLE users";
++        try {
++            preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.executeUpdate();
++        } catch (SQLException e) {
++            e.printStackTrace();
++        } finally {
++            if (preparedStatement != null) {
++                preparedStatement.close();
++            }
++            if (connection != null) {
++                connection.close();
++            }
++        }
+     }
+ }
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1684852555367)
++++ b/.idea/jarRepositories.xml	(date 1684852555367)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.service;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\n\r\nimport java.util.List;\r\n\r\npublic class UserServiceImpl implements UserService {\r\n    public void createUsersTable() {\r\n\r\n    }\r\n\r\n    public void dropUsersTable() {\r\n\r\n    }\r\n\r\n    public void saveUser(String name, String lastName, byte age) {\r\n\r\n    }\r\n\r\n    public void removeUserById(long id) {\r\n\r\n    }\r\n\r\n    public List<User> getAllUsers() {\r\n        return null;\r\n    }\r\n\r\n    public void cleanUsersTable() {\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java b/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java
+--- a/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java	(date 1685008771232)
+@@ -1,31 +1,39 @@
+ package jm.task.core.jdbc.service;
+ 
++import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
++import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
+ import jm.task.core.jdbc.model.User;
+ 
++import java.sql.SQLException;
+ import java.util.List;
+ 
+ public class UserServiceImpl implements UserService {
++
++    private final UserDaoJDBCImpl userDaoJDBCImpl = new UserDaoJDBCImpl();
++
++    @Override
+     public void createUsersTable() {
+-
++        userDaoJDBCImpl.createUsersTable();
+     }
+-
+-    public void dropUsersTable() {
+-
++    @Override
++    public void dropUsersTable() throws SQLException {
++        userDaoJDBCImpl.dropUsersTable();
+     }
+-
+-    public void saveUser(String name, String lastName, byte age) {
+-
++    @Override
++    public void saveUser(String name, String lastName, byte age) throws SQLException {
++        userDaoJDBCImpl.saveUser(name, lastName, age);
+     }
+-
+-    public void removeUserById(long id) {
+-
++    @Override
++    public void removeUserById(long id) throws SQLException {
++        userDaoJDBCImpl.removeUserById(id);
+     }
+-
+-    public List<User> getAllUsers() {
+-        return null;
++    @Override
++    public List<User> getAllUsers() throws SQLException {
++        return userDaoJDBCImpl.getAllUsers();
+     }
+-
+-    public void cleanUsersTable() {
++    @Override
++    public void cleanUsersTable() throws SQLException {
++        userDaoJDBCImpl.cleanUsersTable();
+ 
+     }
+ }
+Index: src/main/java/jm/task/core/jdbc/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        // реализуйте алгоритм здесь\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/Main.java b/src/main/java/jm/task/core/jdbc/Main.java
+--- a/src/main/java/jm/task/core/jdbc/Main.java	(revision 411e0c24ac473952d9bf74783a532b9fd4fe645e)
++++ b/src/main/java/jm/task/core/jdbc/Main.java	(date 1684952460601)
+@@ -1,7 +1,15 @@
+ package jm.task.core.jdbc;
+ 
++import jm.task.core.jdbc.dao.UserDao;
++import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
++import jm.task.core.jdbc.util.Util;
++
++import java.sql.SQLException;
++
+ public class Main {
+-    public static void main(String[] args) {
+-        // реализуйте алгоритм здесь
++    public static void main(String[] args) throws SQLException {
++        Util util = new Util();
++        util.getConnection();
++
+     }
+ }
